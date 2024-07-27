@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebGL2 Render OBJ</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>WebGL2 Render OBJ</h1>
+        <!-- <div>
+            <a class="navigator" href="">ModelFile</a>
+        </div> -->
+    </div>
+    <br>
+    <div class="renderer">
+        <canvas id="canvas" width="1280" height="800">
+        </canvas>
+        <div id="control-panel">
+            <h3 style="text-align: center;">Control Panel</h3>
+            <h4>Angles:</h4>
+            <div id="status">
+                <table id="angles-table">
+                    <tr>
+                        <th>X Rotation</th>
+                        <th>Y Rotation</th>
+                    </tr>
+                    <tr>
+                        <td id="x-angle"></td>
+                        <td id="y-angle"></td>
+                    </tr>
+                    <tr>
+                        <td><button type="button" id="xPlus" class="btn">+</button>
+                            <button type="button" id="xMinus" class="btn">-</button>
+                        </td>
+                        <td><button type="button" id="yPlus" class="btn">+</button>
+                            <button type="button" id="yMinus" class="btn">-</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="webGL\cuon-utils.js"></script>
+    <script src="webGL\cuon-matrix.js"></script>
+    <script src="webGL\webgl-debug.js"></script>
+    <script src="webGL\webgl-utils.js"></script>
+    <script src="MyJavaScriptFiles/RenderOBJ.js"></script>
+</body>
+
+</html>
