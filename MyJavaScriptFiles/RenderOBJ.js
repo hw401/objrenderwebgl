@@ -53,7 +53,7 @@ void main()
     vec4 texColor = texture2D(u_sampler,v_texCoord);
     vec3 diffuse = texColor.xyz * u_lightColor * cos * k_diffuse;
     //高光
-    float k_specular = 0.7;
+    float k_specular = 1.0;
     float n = 10.0;
     vec3 cameraDirection = normalize(u_cameraPosition - vec3(v_position) );
     vec3 reflection = reflect(-lightDirection, normal);
@@ -98,8 +98,8 @@ class Object3D {
 
     async create(gl) {
         this.allBuffers = initAllBuffers(gl);
-        let theFileName = 'Amos.obj';
-        let textureFileName = 'Resources\\Equip_Bow_Amos_01_Tex_Diffuse.png';
+        let theFileName = 'Equip_Pole_Zephyrus_Model.obj';
+        let textureFileName = 'Equip_Pole_Zephyrus_02_Tex_Diffuse.png';
         this.objFile = await readOBJ(theFileName);
         this.mtlFile = await readMTL(this.objFile.MTLFilePath);
         await loadTexture(gl, textureFileName);
@@ -653,7 +653,7 @@ function initGL() {
     var gl = canvas.getContext('webgl');
     initShaders(gl, vshader, fshader);
     gl.enable(gl.DEPTH_TEST);
-    gl.clearColor(0.7, 0.7, 0.7, 1.0);
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
     return gl;
 }
 
@@ -764,8 +764,8 @@ async function main() {
     const obj3d = new Object3D();
     await obj3d.create(gl);
 
-    let xangle = 0.0;
-    let yangle = -90.0;
+    let xangle = -24.0;
+    let yangle = 30.0;
     displayAngle(xangle, yangle);
     drawFrame(obj3d, gl, xangle, yangle);
 
