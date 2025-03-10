@@ -34,12 +34,15 @@ uniform vec3 u_lightPosition;
 uniform vec3 u_lightColor;
 uniform vec3 u_ambient;
 uniform sampler2D u_sampler;
+uniform vec3 u_cameraPosition;
 varying vec2 v_texCoord;
 varying vec4 v_position;
 varying vec3 v_normal;
 varying vec4 v_color;
 void main()
 {
+    //漫反射
+    float k_diffuse = 0.5;
     vec3 normal = normalize(v_normal);
     vec3 lightDirection = normalize( u_lightPosition - vec3(v_position) );
     lightDirection = normalize(lightDirection);
@@ -48,9 +51,16 @@ void main()
     // vec3 diffuse = v_color.xyz * u_lightColor * cos;
     // vec3 ambient = v_color.xyz * u_ambient;
     vec4 texColor = texture2D(u_sampler,v_texCoord);
-    vec3 diffuse = texColor.xyz * u_lightColor * cos;
+    vec3 diffuse = texColor.xyz * u_lightColor * cos * k_diffuse;
+    //高光
+    float k_specular = 0.7;
+    float n = 10.0;
+    vec3 cameraDirection = normalize(u_cameraPosition - vec3(v_position) );
+    vec3 reflection = reflect(-lightDirection, normal);
+    vec3 specular = pow(max(0.0, dot(reflection, cameraDirection)), n) * u_lightColor * k_specular;
+    //环境光
     vec3 ambient = texColor.xyz * u_ambient;
-    gl_FragColor = vec4(diffuse + ambient, v_color.a);
+    gl_FragColor = vec4(diffuse + ambient + specular, v_color.a);
 }
 `;
 
@@ -643,7 +653,7 @@ function initGL() {
     var gl = canvas.getContext('webgl');
     initShaders(gl, vshader, fshader);
     gl.enable(gl.DEPTH_TEST);
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.clearColor(0.7, 0.7, 0.7, 1.0);
     return gl;
 }
 
@@ -655,6 +665,8 @@ function initModelMat(gl) {
 }
 
 function initViewMat(gl) {
+    var u_cameraPosition = gl.getUniformLocation(gl.program, 'u_cameraPosition');
+    gl.uniform3f(u_cameraPosition, 0, 0, 3);
     var viewMat = new Matrix4();
     viewMat.setLookAt(0, 0, 3, 0, 0, 0, 0, 1, 0);
     var u_viewMat = gl.getUniformLocation(gl.program, 'u_viewMat');
@@ -741,6 +753,7 @@ function drawFrame(obj3d, gl, xangle, yangle) {
 
     obj3d.draw(gl);
 }
+
 
 async function main() {
     let gl = initGL();
